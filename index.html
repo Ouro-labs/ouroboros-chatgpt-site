@@ -96,6 +96,7 @@ button{font-family:inherit}
         </div>
 
         <a href="#/news" style="font-size:14px;padding:8px 12px;border-radius:999px" style-hover="background:var(--soft);color:var(--ink)">{{navNews}}</a>
+        <a href="https://ouroboros.page/learn/" target="_blank" rel="noopener" style="font-size:14px;padding:8px 12px;border-radius:999px" style-hover="background:var(--soft);color:var(--ink)">{{navDocs}}</a>
       </nav>
 
       <div style="display:flex;align-items:center;gap:10px">
@@ -119,6 +120,7 @@ button{font-family:inherit}
         <a href="#/core" style="padding:11px 4px;font-size:15px;border-bottom:1px solid var(--line)">Ouroboros Core</a>
         <a href="./roadmap/" style="padding:11px 4px;font-size:15px;border-bottom:1px solid var(--line)">GTM Roadmap</a>
         <a href="#/news" style="padding:13px 4px;font-size:15px;font-weight:600">{{navNews}}</a>
+        <a href="https://ouroboros.page/learn/" target="_blank" rel="noopener" style="padding:13px 4px;font-size:15px;font-weight:600">{{navDocs}}</a>
       </nav>
     </sc-if>
   </header>
@@ -256,6 +258,7 @@ button{font-family:inherit}
         <a href="#/about" style="font-size:14px">{{navAbout}}</a>
         <a href="#/contact" style="font-size:14px">{{navContact}}</a>
         <a href="#/news" style="font-size:14px">{{navNews}}</a>
+        <a href="https://ouroboros.page/learn/" target="_blank" rel="noopener" style="font-size:14px">{{navDocs}}</a>
       </nav>
       <nav aria-label="Legal" style="display:flex;flex-direction:column;gap:10px">
         <span style="font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)">{{ftLegal}}</span>
@@ -279,7 +282,7 @@ class Component extends DCLogic {
   T = {
     en: {
       heroLead: 'Ouroboros is', heroMid: 'is',
-      navAbout: 'About', navMission: 'Our mission', navContact: 'Contact', navProducts: 'Products', navNews: 'News', ctaStart: 'Get started',
+      navAbout: 'About', navMission: 'Our mission', navContact: 'Contact', navProducts: 'Products', navNews: 'News', navDocs: 'Docs', ctaStart: 'Get started',
       homeSub: 'The bottleneck is not AI capability — it is human clarity.', homeCore: 'View the open source',
       homeChatgpt: 'Get ChatGPT Desktop', deskPre: 'Needs the ChatGPT desktop app —', deskPreLink: 'get it here.',
       prodLabel: 'Product',
@@ -311,7 +314,7 @@ class Component extends DCLogic {
     },
     ko: {
       heroLead: 'Ouroboros는', heroMid: '는',
-      navAbout: '소개', navMission: '우리의 미션', navContact: '문의하기', navProducts: '제품', navNews: '소식', ctaStart: '시작하기',
+      navAbout: '소개', navMission: '우리의 미션', navContact: '문의하기', navProducts: '제품', navNews: '소식', navDocs: '문서', ctaStart: '시작하기',
       homeSub: '병목은 AI의 능력이 아니라, 인간의 명확함입니다.', homeCore: '오픈소스 보기',
       homeChatgpt: 'ChatGPT 데스크톱 설치', deskPre: '먼저 ChatGPT 데스크톱 앱이 필요합니다 —', deskPreLink: '여기서 설치',
       prodLabel: '제품',
