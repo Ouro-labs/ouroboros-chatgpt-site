@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
-import { mkdtemp, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, symlink, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
@@ -18,14 +18,21 @@ const disabled = {
   expectedSignerSubject: null, expectedSignerThumbprint: null,
 };
 
-async function fixture({ manifest = enabled, raw, files = { 'Installer.exe': bytes }, html = '<a href="./downloads/Installer.exe">Download</a>' } = {}) {
+async function fixture({ manifest = enabled, raw, files = { 'Installer.exe': bytes }, html = '<a href="./downloads/Installer.exe">Download</a>', links = {} } = {}) {
   const root = await mkdtemp(path.join(os.tmpdir(), 'ouroboros-metadata-'));
   await mkdir(path.join(root, 'downloads'));
   await writeFile(path.join(root, 'index.html'), html);
   if (raw !== null) await writeFile(path.join(root, 'downloads/OuroborosChatGPT.manifest.json'), raw ?? JSON.stringify(manifest));
-  for (const [file, content] of Object.entries(files)) await writeFile(path.join(root, 'downloads', file), content);
+  for (const [file, content] of Object.entries(files)) {
+    const destination = path.join(root, 'downloads', file);
+    await mkdir(path.dirname(destination), { recursive: true });
+    await writeFile(destination, content);
+  }
+  for (const [file, target] of Object.entries(links)) {
+    await symlink(target, path.join(root, 'downloads', file));
+  }
   const { EXPECTED_SIGNER_SUBJECT, ...env } = process.env;
-  return spawnSync(process.execPath, [script.pathname], { env: { ...env, OUROBOROS_SITE_ROOT: root }, encoding: 'utf8' });
+  return spawnSync(process.execPath, [script.pathname], { env: { ...env, OUROBOROS_SITE_ROOT: root }, encoding: 'utf8', timeout: 10000 });
 }
 
 for (const [name, setup] of [
@@ -70,4 +77,34 @@ test('embedded public page JavaScript compiles', async () => {
     count++;
   }
   assert.ok(count > 0);
+});
+
+for (const manifest of [disabled, enabled]) {
+  const base = manifest.availability === 'disabled'
+    ? { manifest, files: {}, html: '<span>Unavailable</span>' }
+    : { manifest, files: { 'Installer.exe': bytes } };
+  for (const relative of ['legacy/Unsigned.exe', '.hidden/deeper/.Unsigned.EXE']) {
+    test(`rejects ${manifest.availability} nested executable ${relative}`, async () => {
+      const result = await fixture({ ...base, files: { ...base.files, [relative]: bytes } });
+      assert.equal(result.status, 1, result.stdout + result.stderr);
+      assert.match(result.stderr, /no executable|exactly the manifested/);
+    });
+  }
+  for (const [name, target] of [['cycle', '.'], ['dangling', 'missing-directory']]) {
+    test(`rejects ${manifest.availability} symbolic link ${name}`, async () => {
+      const result = await fixture({ ...base, links: { [name]: target } });
+      assert.equal(result.status, 1, result.stdout + result.stderr);
+      assert.match(result.stderr, /symbolic links/);
+    });
+  }
+  test(`allows ${manifest.availability} nested non-executable files`, async () => {
+    const result = await fixture({ ...base, files: { ...base.files, '.hidden/notes.txt': 'release notes' } });
+    assert.equal(result.status, 0, result.stderr);
+  });
+}
+
+test('rejects a symbolic link as the manifested executable', async () => {
+  const result = await fixture({ files: {}, links: { 'Installer.exe': 'OuroborosChatGPT.manifest.json' } });
+  assert.equal(result.status, 1, result.stdout + result.stderr);
+  assert.match(result.stderr, /symbolic links/);
 });

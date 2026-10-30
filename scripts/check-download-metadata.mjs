@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { readFile, readdir } from "node:fs/promises";
+import { lstat, readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -39,8 +39,27 @@ if (!new Set(["disabled", "enabled"]).has(manifest.availability)) {
   fail("manifest.availability must be disabled or enabled");
 }
 
-const executableFiles = (await readdir(path.join(repoRoot, "downloads")))
-  .filter((name) => name.toLowerCase().endsWith(".exe"));
+async function inventoryExecutables(root) {
+  const executables = [];
+  const pending = [root];
+  while (pending.length > 0) {
+    const current = pending.pop();
+    const entry = await lstat(current);
+    if (entry.isSymbolicLink()) {
+      fail(`downloads/ must contain no symbolic links: ${path.relative(repoRoot, current)}`);
+    }
+    if (entry.isDirectory()) {
+      for (const name of await readdir(current)) pending.push(path.join(current, name));
+    } else if (!entry.isFile()) {
+      fail(`downloads/ must contain only regular files and directories: ${path.relative(repoRoot, current)}`);
+    } else if (current.toLowerCase().endsWith(".exe")) {
+      executables.push(path.relative(root, current));
+    }
+  }
+  return executables;
+}
+
+const executableFiles = await inventoryExecutables(path.join(repoRoot, "downloads"));
 const executableLinks = [...indexHtml.matchAll(/href=["']([^"']+\.exe(?:[?#][^"']*)?)["']/gi)]
   .map((match) => match[1]);
 

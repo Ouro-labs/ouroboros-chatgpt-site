@@ -19,14 +19,35 @@ function Is-PlaceholderSigner([AllowNull()][string]$Value) {
   return $Value.Trim() -match "^(0+|n/a|na|none|null|unknown|unsigned|todo|tbd|placeholder|changeme|change-me|cn\s*=\s*(todo|unknown|placeholder|changeme))$"
 }
 
+function Get-DownloadExecutables([string]$Directory) {
+  $root = Get-Item -LiteralPath $Directory -Force
+  if (-not $root.PSIsContainer -or ($root.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+    Fail "downloads/ must be a regular directory without reparse points"
+  }
+  $pending = [Collections.Generic.Stack[string]]::new()
+  $pending.Push($root.FullName)
+  while ($pending.Count -gt 0) {
+    foreach ($entry in Get-ChildItem -LiteralPath $pending.Pop() -Force) {
+      if ($entry.Attributes -band [IO.FileAttributes]::ReparsePoint) {
+        Fail "downloads/ must contain no symbolic links or reparse points: $($entry.FullName)"
+      }
+      if ($entry.PSIsContainer) {
+        $pending.Push($entry.FullName)
+      } elseif ($entry.Extension -ieq '.exe') {
+        $entry.FullName.Substring($root.FullName.TrimEnd('\', '/').Length + 1)
+      }
+    }
+  }
+}
+
 if (-not (Test-Path -LiteralPath $ManifestPath)) {
   Fail "manifest not found at $ManifestPath"
 }
 
 $manifest = Get-Content -LiteralPath $ManifestPath -Raw | ConvertFrom-Json
+$executables = @(Get-DownloadExecutables (Split-Path -Parent $ManifestPath))
 
 if ($manifest.availability -eq 'disabled') {
-  $executables = @(Get-ChildItem -LiteralPath (Split-Path -Parent $ManifestPath) -Filter '*.exe' -File)
   if ($manifest.production -isnot [bool] -or $manifest.production -ne $false -or $null -ne $manifest.file -or $null -ne $manifest.sha256 -or $null -ne $manifest.expectedSignerSubject -or $null -ne $manifest.expectedSignerThumbprint) {
     Fail "disabled downloads require production=false and null file, hash, signer, and signer thumbprint"
   }
@@ -60,6 +81,9 @@ if ($manifest.file -isnot [string] -or $manifest.file -notmatch '^[A-Za-z0-9._-]
 }
 if ($manifest.sha256 -isnot [string] -or $manifest.sha256 -cnotmatch '^[a-f0-9]{64}$') {
   Fail "manifest sha256 must be a lowercase SHA-256 digest"
+}
+if ($executables.Count -ne 1 -or $executables[0] -cne $manifest.file) {
+  Fail "downloads/ must contain exactly the manifested executable directly under downloads/"
 }
 
 $downloadPath = Join-Path (Split-Path -Parent $ManifestPath) $manifest.file
