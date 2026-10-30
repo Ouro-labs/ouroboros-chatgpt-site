@@ -38,6 +38,7 @@ test("download UI follows disabled and enabled manifests", async () => {
       }),
     );
 
+    await runSync(fixture);
     await runSync(fixture, "--check");
 
     await writeFile(
