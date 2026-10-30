@@ -27,7 +27,7 @@ $manifest = Get-Content -LiteralPath $ManifestPath -Raw | ConvertFrom-Json
 
 if ($manifest.availability -eq 'disabled') {
   $executables = @(Get-ChildItem -LiteralPath (Split-Path -Parent $ManifestPath) -Filter '*.exe' -File)
-  if ($manifest.production -ne $false -or $null -ne $manifest.file -or $null -ne $manifest.sha256 -or $null -ne $manifest.expectedSignerSubject -or $null -ne $manifest.expectedSignerThumbprint) {
+  if ($manifest.production -isnot [bool] -or $manifest.production -ne $false -or $null -ne $manifest.file -or $null -ne $manifest.sha256 -or $null -ne $manifest.expectedSignerSubject -or $null -ne $manifest.expectedSignerThumbprint) {
     Fail "disabled downloads require production=false and null file, hash, signer, and signer thumbprint"
   }
   if ($executables.Count -ne 0) {
@@ -41,23 +41,25 @@ if ($manifest.availability -ne 'enabled') {
   Fail "manifest availability must be enabled or disabled"
 }
 
-if ($manifest.production -ne $true) {
+if ($manifest.production -isnot [bool] -or $manifest.production -ne $true) {
   Fail "manifest production must be true before this download can be released"
 }
 
-if ([string]::IsNullOrWhiteSpace($ExpectedSignerSubject)) {
-  $ExpectedSignerSubject = $manifest.expectedSignerSubject
-}
-
 if (Is-PlaceholderSigner $ExpectedSignerSubject) {
-  Fail "expected signer subject is missing or a placeholder"
+  Fail "protected EXPECTED_SIGNER_SUBJECT is missing or a placeholder"
 }
-if ([string]::IsNullOrWhiteSpace($ExpectedSignerThumbprint)) {
-  $ExpectedSignerThumbprint = $manifest.expectedSignerThumbprint
+if ($ExpectedSignerThumbprint -notmatch '^[A-Fa-f0-9]{40}$') {
+  Fail "protected EXPECTED_SIGNER_THUMBPRINT must be a 40-character certificate thumbprint"
 }
-$ExpectedSignerThumbprint = $ExpectedSignerThumbprint.Replace(' ', '').ToUpperInvariant()
-if ($ExpectedSignerThumbprint -notmatch '^[A-F0-9]{40}$') {
-  Fail "expected signer thumbprint must be a 40-character SHA-1 certificate thumbprint"
+$ExpectedSignerThumbprint = $ExpectedSignerThumbprint.ToUpperInvariant()
+if ($manifest.expectedSignerSubject -cne $ExpectedSignerSubject -or $manifest.expectedSignerThumbprint -ine $ExpectedSignerThumbprint) {
+  Fail "manifest signer does not match the protected signing identity"
+}
+if ($manifest.file -isnot [string] -or $manifest.file -notmatch '^[A-Za-z0-9._-]+\.exe$') {
+  Fail "manifest file must be an executable directly under downloads/"
+}
+if ($manifest.sha256 -isnot [string] -or $manifest.sha256 -cnotmatch '^[a-f0-9]{64}$') {
+  Fail "manifest sha256 must be a lowercase SHA-256 digest"
 }
 
 $downloadPath = Join-Path (Split-Path -Parent $ManifestPath) $manifest.file
@@ -102,6 +104,9 @@ if (Is-PlaceholderSigner $signature.TimeStamperCertificate.Subject) {
 }
 
 $kitsRoot = Join-Path ${env:ProgramFiles(x86)} 'Windows Kits\10\bin'
+if (-not (Test-Path -LiteralPath $kitsRoot)) {
+  Fail "Windows SDK signing tools directory was not found"
+}
 $signTool = Get-ChildItem -Path $kitsRoot -Filter signtool.exe -File -Recurse |
   Where-Object { $_.FullName -match '\\x64\\signtool\.exe$' } |
   Sort-Object FullName -Descending |

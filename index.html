@@ -10,6 +10,13 @@
 <meta property="og:url" content="https://ouroboros.is/">
 <meta property="og:title" content="Ouroboros">
 <meta property="og:description" content="The bottleneck is not AI capability — it is human clarity.">
+<meta property="og:image" content="https://ouroboros.is/assets/ouroboros-engraving.png">
+<meta property="og:image:alt" content="Ouroboros">
+<meta property="og:site_name" content="Ouroboros">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ouroboros">
+<meta name="twitter:description" content="The bottleneck is not AI capability — it is human clarity.">
+<meta name="twitter:image" content="https://ouroboros.is/assets/ouroboros-engraving.png">
 <link rel="icon" type="image/png" href="./assets/logo-snake.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -82,12 +89,14 @@ button{font-family:inherit}
             <div role="menu" style="min-width:200px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:var(--shadow);animation:menuIn .15s ease;display:flex;flex-direction:column;gap:2px">
               <a role="menuitem" href="#/desktop" style="display:block;padding:9px 12px;border-radius:8px;font-size:14px" style-hover="background:var(--soft);color:var(--ink)">Ouroboros for ChatGPT</a>
               <a role="menuitem" href="#/core" style="display:block;padding:9px 12px;border-radius:8px;font-size:14px" style-hover="background:var(--soft);color:var(--ink)">Ouroboros Core</a>
+              <a role="menuitem" href="./roadmap/" style="display:block;padding:9px 12px;border-radius:8px;font-size:14px" style-hover="background:var(--soft);color:var(--ink)">GTM Roadmap</a>
             </div>
             </div>
           </sc-if>
         </div>
 
         <a href="#/news" style="font-size:14px;padding:8px 12px;border-radius:999px" style-hover="background:var(--soft);color:var(--ink)">{{navNews}}</a>
+        <a href="https://ouroboros.page/learn/" target="_blank" rel="noopener" style="font-size:14px;padding:8px 12px;border-radius:999px" style-hover="background:var(--soft);color:var(--ink)">{{navDocs}}</a>
       </nav>
 
       <div style="display:flex;align-items:center;gap:10px">
@@ -109,7 +118,9 @@ button{font-family:inherit}
         <span style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);padding:14px 4px 4px">{{navProducts}}</span>
         <a href="#/desktop" style="padding:11px 4px;font-size:15px;border-bottom:1px solid var(--line)">Ouroboros for ChatGPT</a>
         <a href="#/core" style="padding:11px 4px;font-size:15px;border-bottom:1px solid var(--line)">Ouroboros Core</a>
+        <a href="./roadmap/" style="padding:11px 4px;font-size:15px;border-bottom:1px solid var(--line)">GTM Roadmap</a>
         <a href="#/news" style="padding:13px 4px;font-size:15px;font-weight:600">{{navNews}}</a>
+        <a href="https://ouroboros.page/learn/" target="_blank" rel="noopener" style="padding:13px 4px;font-size:15px;font-weight:600">{{navDocs}}</a>
       </nav>
     </sc-if>
   </header>
@@ -124,7 +135,6 @@ button{font-family:inherit}
           <p style="margin:26px 0 0;font-size:clamp(15px,1.5vw,18px);color:var(--mute);line-height:1.6;letter-spacing:.01em;animation:fadeUp .7s ease .24s both">{{homeSub}}</p>
           <div style="margin-top:36px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;animation:fadeUp .7s ease .36s both">
             <a href="#/desktop" style="font-size:15px;font-weight:600;padding:13px 26px;border-radius:999px;background:var(--accent);color:#FFFFFF;transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease" style-hover="background:var(--ink);color:var(--bg);transform:translateY(-2px);box-shadow:var(--shadow)">Ouroboros for ChatGPT →</a>
-            <a href="{{chatgptUrl}}" target="_blank" rel="noopener" style="font-size:15px;font-weight:600;padding:13px 26px;border-radius:999px;border:1px solid var(--line);transition:transform .18s ease,border-color .18s ease" style-hover="border-color:var(--ink);color:var(--ink);transform:translateY(-2px)">{{homeChatgpt}}</a>
           </div>
         </div>
       </section>
@@ -135,8 +145,11 @@ button{font-family:inherit}
         <div style="font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)">{{prodLabel}}</div>
         <h1 style="margin:0;font-size:clamp(36px,5.4vw,64px);font-weight:800;letter-spacing:-0.02em;line-height:1.08">Ouroboros for ChatGPT</h1>
         <p style="margin:0;font-size:clamp(16px,1.5vw,19px);color:var(--mute);max-width:560px;line-height:1.55">{{deskSub}}</p>
-        <span data-windows-download-control aria-disabled="true" style="margin-top:8px;font-size:15.5px;font-weight:600;padding:15px 30px;border-radius:999px;background:var(--soft);color:var(--mute)">{{deskDl}}</span>
-        <p style="margin:0;font-size:14px;color:var(--mute)">{{deskPre}} <a href="{{chatgptUrl}}" target="_blank" rel="noopener" style="color:var(--ink);border-bottom:1px solid var(--line)" style-hover="color:var(--accent)">{{deskPreLink}}</a></p>
+        <div style="margin-top:8px;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+          <span data-windows-download-control aria-disabled="true" style="margin-top:8px;font-size:15.5px;font-weight:600;padding:15px 30px;border-radius:999px;background:var(--soft);color:var(--mute)">{{deskDl}}</span>
+          <a href="./downloads/Ouroboros-for-ChatGPT-macOS-arm64-unsigned.dmg" download="Ouroboros-for-ChatGPT-macOS-arm64-unsigned.dmg" style="font-size:15.5px;font-weight:600;padding:15px 30px;border-radius:999px;background:var(--accent);color:#FFFFFF" style-hover="background:var(--ink);color:var(--bg)">{{deskDlMac}}</a>
+        </div>
+        <p style="margin:-10px 0 0;font-size:12.5px;color:var(--mute);max-width:620px;line-height:1.5">{{deskMacNote}}</p>
         <p style="margin:0;font-size:14px;color:var(--mute)">{{deskSrcPre}} <a href="https://github.com/Q00/ouroboros" target="_blank" rel="noopener" style="color:var(--ink);border-bottom:1px solid var(--line)" style-hover="color:var(--accent)">{{deskSrcLink}}</a></p>
       </section>
     </sc-if>
@@ -238,12 +251,14 @@ button{font-family:inherit}
         <span style="font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)">{{ftProducts}}</span>
         <a href="#/desktop" style="font-size:14px">For ChatGPT</a>
         <a href="#/core" style="font-size:14px">Core</a>
+        <a href="./roadmap/" style="font-size:14px">GTM Roadmap</a>
       </nav>
       <nav aria-label="Company" style="display:flex;flex-direction:column;gap:10px">
         <span style="font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)">{{ftCompany}}</span>
         <a href="#/about" style="font-size:14px">{{navAbout}}</a>
         <a href="#/contact" style="font-size:14px">{{navContact}}</a>
         <a href="#/news" style="font-size:14px">{{navNews}}</a>
+        <a href="https://ouroboros.page/learn/" target="_blank" rel="noopener" style="font-size:14px">{{navDocs}}</a>
       </nav>
       <nav aria-label="Legal" style="display:flex;flex-direction:column;gap:10px">
         <span style="font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)">{{ftLegal}}</span>
@@ -267,11 +282,12 @@ class Component extends DCLogic {
   T = {
     en: {
       heroLead: 'Ouroboros is', heroMid: 'is',
-      navAbout: 'About', navMission: 'Our mission', navContact: 'Contact', navProducts: 'Products', navNews: 'News', ctaStart: 'Get started',
+      navAbout: 'About', navMission: 'Our mission', navContact: 'Contact', navProducts: 'Products', navNews: 'News', navDocs: 'Docs', ctaStart: 'Get started',
       homeSub: 'The bottleneck is not AI capability — it is human clarity.', homeCore: 'View the open source',
       homeChatgpt: 'Get ChatGPT Desktop', deskPre: 'Needs the ChatGPT desktop app —', deskPreLink: 'get it here.',
       prodLabel: 'Product',
-      deskSub: 'The evolving loop, on your desktop.', deskDl: 'Windows download temporarily unavailable',
+      deskSub: 'The evolving loop, on your desktop.', deskDl: 'Windows download temporarily unavailable', deskDlMac: 'macOS Apple Silicon preview',
+      deskMacNote: 'Unsigned and unnotarized preview. Protocol lifecycle verified; official ChatGPT GUI discovery is not yet verified.',
       deskSrcPre: 'Prefer the source?', deskSrcLink: 'Get Ouroboros Core on GitHub.',
       coreSub: 'The open-source engine behind Ouroboros for ChatGPT.', coreBtn: 'View on GitHub',
       aboutLabel: 'Our mission', aboutH1: 'Fix the human, not the machine.',
@@ -284,7 +300,7 @@ class Component extends DCLogic {
       newsH1: 'News', newsDate: 'July 15, 2026', newsTitle: 'Introducing Ouroboros for ChatGPT',
       newsP1: 'Most AI coding fails at the input, not the output. The bottleneck is not AI capability — it is human clarity.',
       newsP2: 'Ouroboros for ChatGPT starts with a question instead of a prompt. Every run leaves an evaluation, and every evaluation becomes the input for the next generation.',
-      newsP3: 'Ouroboros for ChatGPT is available for Windows. The engine behind it, Ouroboros Core, is open source.',
+      newsP3: 'Ouroboros for ChatGPT is available for Windows, with an unsigned Apple Silicon preview for macOS. The engine behind it, Ouroboros Core, is open source.',
       newsP4: 'The serpent does not repeat — it evolves.',
       termsH1: 'Terms', termsP1: 'Ouroboros is provided as-is, without warranty of any kind.',
       termsP2a: 'The license for Ouroboros Core lives in the ', termsP2link: 'GitHub repository', termsP2b: '.',
@@ -298,11 +314,12 @@ class Component extends DCLogic {
     },
     ko: {
       heroLead: 'Ouroboros는', heroMid: '는',
-      navAbout: '소개', navMission: '우리의 미션', navContact: '문의하기', navProducts: '제품', navNews: '소식', ctaStart: '시작하기',
+      navAbout: '소개', navMission: '우리의 미션', navContact: '문의하기', navProducts: '제품', navNews: '소식', navDocs: '문서', ctaStart: '시작하기',
       homeSub: '병목은 AI의 능력이 아니라, 인간의 명확함입니다.', homeCore: '오픈소스 보기',
       homeChatgpt: 'ChatGPT 데스크톱 설치', deskPre: '먼저 ChatGPT 데스크톱 앱이 필요합니다 —', deskPreLink: '여기서 설치',
       prodLabel: '제품',
-      deskSub: '당신의 데스크톱 위, 진화하는 루프.', deskDl: 'Windows 다운로드 준비 중',
+      deskSub: '당신의 데스크톱 위, 진화하는 루프.', deskDl: 'Windows 다운로드 준비 중', deskDlMac: 'macOS Apple Silicon 프리뷰',
+      deskMacNote: '미서명·미공증 프리뷰입니다. 프로토콜 수명주기는 검증됐으며 공식 ChatGPT GUI 발견은 아직 검증되지 않았습니다.',
       deskSrcPre: '소스가 더 편하신가요?', deskSrcLink: 'GitHub에서 Ouroboros Core 받기',
       coreSub: 'Ouroboros for ChatGPT를 움직이는 오픈소스 엔진.', coreBtn: 'GitHub에서 보기',
       aboutLabel: '우리의 미션', aboutH1: '기계가 아니라, 사람을 고칩니다.',
@@ -315,7 +332,7 @@ class Component extends DCLogic {
       newsH1: '소식', newsDate: '2026년 7월 15일', newsTitle: 'Ouroboros for ChatGPT를 소개합니다',
       newsP1: '대부분의 AI 코딩은 출력이 아니라 입력에서 실패합니다. 병목은 AI의 능력이 아니라, 인간의 명확함입니다.',
       newsP2: 'Ouroboros for ChatGPT는 프롬프트 대신 질문에서 시작합니다. 모든 실행은 평가를 남기고, 모든 평가는 다음 세대의 입력이 됩니다.',
-      newsP3: 'Ouroboros for ChatGPT는 Windows에서 사용할 수 있습니다. 그 엔진인 Ouroboros Core는 오픈소스입니다.',
+      newsP3: 'Ouroboros for ChatGPT는 Windows에서 사용할 수 있고, macOS Apple Silicon용 미서명 프리뷰도 제공합니다. 그 엔진인 Ouroboros Core는 오픈소스입니다.',
       newsP4: '뱀은 반복하지 않습니다 — 진화합니다.',
       termsH1: '이용약관', termsP1: 'Ouroboros는 어떠한 보증 없이 있는 그대로 제공됩니다.',
       termsP2a: 'Ouroboros Core의 라이선스는 ', termsP2link: 'GitHub 저장소', termsP2b: '에서 확인할 수 있습니다.',

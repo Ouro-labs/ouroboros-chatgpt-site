@@ -4,7 +4,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const repoRoot = path.resolve(__dirname, "..");
+const repoRoot = process.env.OUROBOROS_SITE_ROOT
+  ? path.resolve(process.env.OUROBOROS_SITE_ROOT)
+  : path.resolve(__dirname, "..");
 const manifestPath = path.join(repoRoot, "downloads", "OuroborosChatGPT.manifest.json");
 
 const placeholderPattern = /^(?:0+|n\/a|na|none|null|unknown|unsigned|todo|tbd|placeholder|changeme|change-me|cn\s*=\s*(?:todo|unknown|placeholder|changeme))$/i;
@@ -57,7 +59,7 @@ if (!isNonEmptyString(manifest.file)) {
   fail("manifest.file must be a non-empty file name");
 }
 
-if (manifest.file.includes("/") || manifest.file.includes("\\") || path.basename(manifest.file) !== manifest.file) {
+if (!/^[A-Za-z0-9._-]+\.exe$/i.test(manifest.file)) {
   fail("manifest.file must name a file directly under downloads/");
 }
 

@@ -78,3 +78,25 @@ test("download UI follows disabled and enabled manifests", async () => {
     await rm(fixture, { recursive: true, force: true });
   }
 });
+
+test('rejects a redirected download control and unsafe enabled manifests', async () => {
+  const fixture = await mkdtemp(path.join(os.tmpdir(), 'ouroboros-site-ui-negative-'));
+  await mkdir(path.join(fixture, 'downloads'));
+  const source = await readFile(path.join(repoRoot, 'index.html'), 'utf8');
+  const manifestPath = path.join(fixture, 'downloads/OuroborosChatGPT.manifest.json');
+  for (const manifest of [
+    { availability: 'unknown' },
+    { availability: 'enabled', production: 'true', file: 'Installer.exe' },
+    { availability: 'enabled', production: true, file: '../Installer.exe' },
+    { availability: 'enabled', production: true, file: 'https://example.com/Installer.exe' },
+  ]) {
+    await writeFile(path.join(fixture, 'index.html'), source);
+    await writeFile(manifestPath, JSON.stringify(manifest));
+    await assert.rejects(runSync(fixture), /download UI sync failed/);
+  }
+  await writeFile(manifestPath, JSON.stringify({ availability: 'enabled', production: true, file: 'Installer.exe' }));
+  await runSync(fixture);
+  const enabled = await readFile(path.join(fixture, 'index.html'), 'utf8');
+  await writeFile(path.join(fixture, 'index.html'), enabled.replace('./downloads/Installer.exe', 'https://example.com/redirect'));
+  await assert.rejects(runSync(fixture, '--check'), /not synchronized/);
+});

@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: "20"
       - run: |
-          node --test scripts/sync-download-ui.test.mjs
+          node --test scripts/*.test.mjs
           node scripts/sync-download-ui.mjs --check
           node scripts/check-download-metadata.mjs
 
@@ -36,6 +36,7 @@ jobs:
         shell: pwsh
         env:
           EXPECTED_SIGNER_SUBJECT: ${{ vars.EXPECTED_SIGNER_SUBJECT }}
+          EXPECTED_SIGNER_THUMBPRINT: ${{ vars.EXPECTED_SIGNER_THUMBPRINT }}
         run: ./scripts/Verify-PublicDownload.ps1
 
   deploy-pages:
