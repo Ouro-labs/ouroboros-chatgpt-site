@@ -1,0 +1,5 @@
+/.github/workflows/ @sergiobuilds
+/.github/CODEOWNERS @sergiobuilds
+/scripts/ @sergiobuilds
+/downloads/ @sergiobuilds
+/index.html @sergiobuilds

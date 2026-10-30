@@ -146,7 +146,7 @@ button{font-family:inherit}
         <h1 style="margin:0;font-size:clamp(36px,5.4vw,64px);font-weight:800;letter-spacing:-0.02em;line-height:1.08">Ouroboros for ChatGPT</h1>
         <p style="margin:0;font-size:clamp(16px,1.5vw,19px);color:var(--mute);max-width:560px;line-height:1.55">{{deskSub}}</p>
         <div style="margin-top:8px;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
-          <a href="./downloads/OuroborosChatGPT.exe" download="OuroborosChatGPT.exe" style="font-size:15.5px;font-weight:600;padding:15px 30px;border-radius:999px;background:var(--pill);color:var(--pilltxt)" style-hover="background:var(--accent);color:var(--bg)">{{deskDlWin}}</a>
+          <span data-windows-download-control aria-disabled="true" style="margin-top:8px;font-size:15.5px;font-weight:600;padding:15px 30px;border-radius:999px;background:var(--soft);color:var(--mute)">{{deskDl}}</span>
           <a href="./downloads/Ouroboros-for-ChatGPT-macOS-arm64-unsigned.dmg" download="Ouroboros-for-ChatGPT-macOS-arm64-unsigned.dmg" style="font-size:15.5px;font-weight:600;padding:15px 30px;border-radius:999px;background:var(--accent);color:#FFFFFF" style-hover="background:var(--ink);color:var(--bg)">{{deskDlMac}}</a>
         </div>
         <p style="margin:-10px 0 0;font-size:12.5px;color:var(--mute);max-width:620px;line-height:1.5">{{deskMacNote}}</p>
@@ -286,7 +286,7 @@ class Component extends DCLogic {
       homeSub: 'The bottleneck is not AI capability — it is human clarity.', homeCore: 'View the open source',
       homeChatgpt: 'Get ChatGPT Desktop', deskPre: 'Needs the ChatGPT desktop app —', deskPreLink: 'get it here.',
       prodLabel: 'Product',
-      deskSub: 'The evolving loop, on your desktop.', deskDlWin: 'Download for Windows', deskDlMac: 'macOS Apple Silicon preview',
+      deskSub: 'The evolving loop, on your desktop.', deskDl: 'Windows download temporarily unavailable', deskDlMac: 'macOS Apple Silicon preview',
       deskMacNote: 'Unsigned and unnotarized preview. Protocol lifecycle verified; official ChatGPT GUI discovery is not yet verified.',
       deskSrcPre: 'Prefer the source?', deskSrcLink: 'Get Ouroboros Core on GitHub.',
       coreSub: 'The open-source engine behind Ouroboros for ChatGPT.', coreBtn: 'View on GitHub',
@@ -318,7 +318,7 @@ class Component extends DCLogic {
       homeSub: '병목은 AI의 능력이 아니라, 인간의 명확함입니다.', homeCore: '오픈소스 보기',
       homeChatgpt: 'ChatGPT 데스크톱 설치', deskPre: '먼저 ChatGPT 데스크톱 앱이 필요합니다 —', deskPreLink: '여기서 설치',
       prodLabel: '제품',
-      deskSub: '당신의 데스크톱 위, 진화하는 루프.', deskDlWin: 'Windows용 다운로드', deskDlMac: 'macOS Apple Silicon 프리뷰',
+      deskSub: '당신의 데스크톱 위, 진화하는 루프.', deskDl: 'Windows 다운로드 준비 중', deskDlMac: 'macOS Apple Silicon 프리뷰',
       deskMacNote: '미서명·미공증 프리뷰입니다. 프로토콜 수명주기는 검증됐으며 공식 ChatGPT GUI 발견은 아직 검증되지 않았습니다.',
       deskSrcPre: '소스가 더 편하신가요?', deskSrcLink: 'GitHub에서 Ouroboros Core 받기',
       coreSub: 'Ouroboros for ChatGPT를 움직이는 오픈소스 엔진.', coreBtn: 'GitHub에서 보기',
@@ -445,4 +445,3 @@ class Component extends DCLogic {
 </script>
 </body>
 </html>
-
