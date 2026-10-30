@@ -1,0 +1,21 @@
+{
+  "product": "Ouroboros for ChatGPT",
+  "platform": "macOS Apple Silicon",
+  "channel": "unsigned-unnotarized-preview",
+  "filename": "Ouroboros-for-ChatGPT-macOS-arm64-unsigned.dmg",
+  "size": 69368997,
+  "sha256": "f5837c16cabe9cd8ac54c20d8a9b022698f5dcc71154fee97e494a0baba6de93",
+  "sourceRepository": "Ouro-labs/gtm",
+  "sourceCommit": "517cb0b90cbbff8fbe767c7f3a42d5a9ff066888",
+  "verificationRun": "https://github.com/Ouro-labs/gtm/actions/runs/29579334475",
+  "verification": {
+    "architecture": "arm64",
+    "offlineWheelCount": 45,
+    "cleanLifecycleLoops": 3,
+    "mcpToolCount": 31,
+    "calledTool": "ouroboros_interview",
+    "officialChatGptGuiE2e": "not-run",
+    "signed": false,
+    "notarized": false
+  }
+}
